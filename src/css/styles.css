@@ -23,10 +23,92 @@ body {
     font-family: 'raleway';
 }
 
+.stars {
+    display: flex;
+    justify-content: space-around;
+}
+
 .centerAll {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.main {
+    background-image: url("/M7_quizApp/src/img/quizbackground.png");
+    background-color: #cccccc;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.imgHead {
+    height: 12rem;
+    object-fit: contain;
+}
+
+.pl_0 {
+    padding-left: 0 !important;
+}
+
+.pr_0 {
+    padding-right: 0 !important;
+}
+
+.pl_1 {
+    padding-left: 0.7em;
+}
+
+.card {
+    background-color: transparent !important;
+}
+
+.rightSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.questionFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stars img {
+    min-width: 10%;
+    min-height: auto;
+}
+
+.stars span {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.questionRestart {
+    background-color: blueviolet;
+    padding: 1rem 3rem;
+}
+
+.answerCard {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.card-title {
+    padding: 1rem 1rem;
+}
+
+.cardBlock:hover {
+    background-color: aqua !important;
+    cursor: pointer;
 }
 
 .d-none {
