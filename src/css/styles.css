@@ -111,6 +111,14 @@ body {
     cursor: pointer;
 }
 
+.correctBG {
+    background-color: greenyellow !important;
+}
+
+.falseBG {
+    background-color: red !important;
+}
+
 .d-none {
     display: none !important;
 }

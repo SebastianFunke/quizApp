@@ -21,6 +21,8 @@ function loadArrayFromLocalStorage(key) {
 
 let actualQuestion = 1;
 let usedHint = false;
+let restarted = false;
+let answered = false;
 let questions = {
     "1": {
         "question": "Wieviele Softwareentwickler braucht man um eine Glühbirne zu wechseln?",
@@ -81,54 +83,130 @@ function setQuestion(id) {
     document.getElementById('answerTwo').innerText = questions[id].answer2;
     document.getElementById('answerThree').innerText = questions[id].answer3;
     document.getElementById('answerFour').innerText = questions[id].answer4;
+    scaleQuestionNumber(id);
     actualQuestion = id;
+
+}
+
+function scaleQuestionNumber(id) {
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById('qNumber' + i).style.transform = "scale(1,1)";
+    }
+    document.getElementById('qNumber' + id).style.transform = "scale(2,2)";
 }
 
 function checkAnswer(answerNumber) {
-    if (questions[actualQuestion].correct == 'answer' + answerNumber) {
-        console.log('correct');
-        if (usedHint == false) {
-            setStar(actualQuestion, 'green');
+    if (!answered) {
+        if (questions[actualQuestion].correct == 'answer' + answerNumber) {
+            console.log('correct');
+            if (usedHint == false) {
+                setStar(actualQuestion, 'green');
+            } else {
+                setStar(actualQuestion, 'yellow');
+            }
+            setAnswerBackgroundColor(answerNumber, 'green');
+
         } else {
-            setStar(actualQuestion, 'yellow');
+            console.log('false');
+            setStar(actualQuestion, 'red');
+            setAnswerBackgroundColor(answerNumber, 'red');
+            setAnswerBackgroundColor(questions[actualQuestion].correct.slice(6, 7), 'green');
         }
-    } else {
-        console.log('false');
-        setStar(actualQuestion, 'red');
+
+
+
     }
-    document.getElementById('answerOne').disabled = true;
-    usedHint = false;
-    setQuestion(actualQuestion + 1);
+    removeHoverClass();
+    delay();
 }
 
-function setUsedHint() {
+
+function removeHoverClass() {
+    document.getElementById('answerBlock1').classList.remove('cardBlock');
+    document.getElementById('answerBlock2').classList.remove('cardBlock');
+    document.getElementById('answerBlock3').classList.remove('cardBlock');
+    document.getElementById('answerBlock4').classList.remove('cardBlock');
+}
+
+function addHoverClass() {
+    if (!document.getElementById('answerBlock1').classList.contains('cardBlock')) {
+        document.getElementById('answerBlock1').classList.add('cardBlock');
+        document.getElementById('answerBlock2').classList.add('cardBlock');
+        document.getElementById('answerBlock3').classList.add('cardBlock');
+        document.getElementById('answerBlock4').classList.add('cardBlock');
+    }
+}
+
+function removeBackgroundColors() {
+    document.getElementById('answerBlock1').classList.remove('falseBG');
+    document.getElementById('answerBlock2').classList.remove('falseBG');
+    document.getElementById('answerBlock3').classList.remove('falseBG');
+    document.getElementById('answerBlock4').classList.remove('falseBG');
+    document.getElementById('answerBlock1').classList.remove('correctBG');
+    document.getElementById('answerBlock2').classList.remove('correctBG');
+    document.getElementById('answerBlock3').classList.remove('correctBG');
+    document.getElementById('answerBlock4').classList.remove('correctBG');
+}
+
+function setAnswerBackgroundColor(id, color) {
+    let answerBlock = document.getElementById('answerBlock' + id);
+    console.log('test: ' + id + ' ' + color);
+    switch (color) {
+        case 'red':
+            answerBlock.classList.add('falseBG');
+            break;
+        case 'green':
+            answerBlock.classList.add('correctBG');
+            break;
+    }
+}
+
+function hideHint() {
+    usedHint = false;
+    let hint = document.getElementById('hint');
+    if (!hint.classList.contains('d-none')) {
+        hint.classList.add('d-none');
+    };
+
+}
+
+function setHint() {
     usedHint = true;
+    let hint = document.getElementById('hint');
+    hint.innerText = questions[actualQuestion].hint;
+    hint.classList.remove('d-none');
 }
 
 function restart() {
-    usedHint = false;
+    restarted = true;
     actualQuestion = 1;
     setQuestion(actualQuestion);
+    hideHint();
+    addHoverClass();
     for (let i = 1; i <= 5; i++) {
         setStar(i, 'blue');
     }
+    answered = false;
+    removeBackgroundColors();
+    delay();
+
 }
 
 function setStar(id, color) {
     let star = document.getElementById('star' + id);
-    switch (color) {
-        case 'red':
-            star.src = "src/img/star_red.png";
-            break;
-        case 'green':
-            star.src = "src/img/star_green.png";
-            break;
-        case 'yellow':
-            star.src = "src/img/star_yellow.png";
-            break;
-        case 'blue':
-            star.src = "src/img/star_raw.png";
-            break;
-    }
+    star.src = "src/img/star_" + color + ".png";
+}
 
+async function delay() {
+    answered = true;
+
+    if (!restarted) {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setQuestion(actualQuestion + 1);
+        hideHint();
+        addHoverClass();
+        removeBackgroundColors();
+    }
+    restarted = false;
+    answered = false;
 }

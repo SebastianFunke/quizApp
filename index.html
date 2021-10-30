@@ -29,31 +29,27 @@
 
 
     <div class="centerAll mt-2">
+        <div class=""></div>
         <div class="card main" style="width: 45rem;">
             <img class="imgHead" src="src/img/quiz-head.png" alt="">
             <div class="stars">
-                <img id="star1" src="src/img/star_raw.png" alt="">
-                <img id="star2" src="src/img/star_raw.png" alt="">
-                <img id="star3" src="src/img/star_raw.png" alt="">
-                <img id="star4" src="src/img/star_raw.png" alt="">
-                <img id="star5" src="src/img/star_raw.png" alt="">
+                <img id="star1" src="src/img/star_blue.png" alt="">
+                <img id="star2" src="src/img/star_blue.png" alt="">
+                <img id="star3" src="src/img/star_blue.png" alt="">
+                <img id="star4" src="src/img/star_blue.png" alt="">
+                <img id="star5" src="src/img/star_blue.png" alt="">
             </div>
             <div class="stars">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
+                <span id="qNumber1">1</span>
+                <span id="qNumber2">2</span>
+                <span id="qNumber3">3</span>
+                <span id="qNumber4">4</span>
+                <span id="qNumber5">5</span>
 
             </div>
             <div class="card-body">
                 <div class="question">
                     <h5 id="questionText" class="card-title">Frage</h5>
-
-                    <button onclick="setStar(1,'red')">test</button>
-                    <button onclick="setStar(1,'green')">test</button>
-                    <button onclick="setStar(1,'blue')">test</button>
-                    <button onclick="setStar(1,'yellow')">test</button>
 
 
                 </div>
@@ -63,7 +59,7 @@
                         <div class="row pl_1">
 
 
-                            <div class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(1)">
+                            <div id="answerBlock1" class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(1)">
                                 <div class="row pr_03">
                                     <div class="col-1 pl_0 pr_0">
                                         <div class="card-body pl_0 pr_0">
@@ -80,7 +76,7 @@
 
 
 
-                            <div class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(2)">
+                            <div id="answerBlock2" class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(2)">
                                 <div class="row pr_03">
                                     <div class="col-1 pl_0 pr_0">
                                         <div class="card-body pl_0 pr_0">
@@ -97,14 +93,14 @@
 
 
 
-                            <div class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(3)">
+                            <div id="answerBlock3" class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(3)">
                                 <div class="row pr_03">
                                     <div class="col-1 pl_0 pr_0">
                                         <div class="card-body pl_0 pr_0">
                                             <h6 class="card-title pr_0">C</h6>
                                         </div>
                                     </div>
-                                    <div class=" col-11 pl_0 pr_0 cardBlock">
+                                    <div class=" col-11 pl_0 pr_0">
                                         <div class="card-body pl_0 pr_0">
                                             <h6 id="answerThree" class="card-title pl_0 pr_0">Card title</h6>
                                         </div>
@@ -114,7 +110,7 @@
 
 
 
-                            <div class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(4)">
+                            <div id="answerBlock4" class="row g-0 card mb-2 pl_0 cardBlock" onclick="checkAnswer(4)">
                                 <div class="row pr_03">
                                     <div class="col-1 pl_0 pr_0">
                                         <div class="card-body pl_0 pr_0">
@@ -145,8 +141,8 @@
                         <div class="card mb-3">
                             <div class="card-body rightSide">
                                 <span onclick="restart()" class="card-title card cardBlock">Neustart</span>
-                                <span onclick="setUsedHint()" class="card-title card cardBlock">Hinweis</span>
-                                <span class="card-title card">TextHintfgd fd fgd fdg  hfgsd dhsg dhgs hdgs</span>
+                                <span onclick="setHint()" class="card-title card cardBlock">Hinweis</span>
+                                <span id="hint" class="card-title card d-none"></span>
                             </div>
                         </div>
                     </div>
