@@ -20,6 +20,7 @@ function loadArrayFromLocalStorage(key) {
 
 
 let actualQuestion = 1;
+let usedHint = false;
 let questions = {
     "1": {
         "question": "Wieviele Softwareentwickler braucht man um eine Glühbirne zu wechseln?",
@@ -56,6 +57,15 @@ let questions = {
         "answer4": "1983",
         "hint": "ToDo: Hinweis",
         "correct": "answer3"
+    },
+    "5": {
+        "question": "question",
+        "answer1": "false",
+        "answer2": "false",
+        "answer3": "false",
+        "answer4": "true",
+        "hint": "ToDo: Hinweis",
+        "correct": "answer4"
     }
 
 
@@ -77,13 +87,31 @@ function setQuestion(id) {
 function checkAnswer(answerNumber) {
     if (questions[actualQuestion].correct == 'answer' + answerNumber) {
         console.log('correct');
+        if (usedHint == false) {
+            setStar(actualQuestion, 'green');
+        } else {
+            setStar(actualQuestion, 'yellow');
+        }
     } else {
         console.log('false');
+        setStar(actualQuestion, 'red');
     }
+    document.getElementById('answerOne').disabled = true;
+    usedHint = false;
+    setQuestion(actualQuestion + 1);
 }
 
-function sendAnswer(id) {
-    console.log('test' + id);
+function setUsedHint() {
+    usedHint = true;
+}
+
+function restart() {
+    usedHint = false;
+    actualQuestion = 1;
+    setQuestion(actualQuestion);
+    for (let i = 1; i <= 5; i++) {
+        setStar(i, 'blue');
+    }
 }
 
 function setStar(id, color) {
