@@ -127,6 +127,24 @@ body {
     padding: 8px;
 }
 
+@media (max-width: 576px) {
+    .card-body {
+        text-align: center !important;
+    }
+    .rightSide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+    }
+    .card-title {
+        padding-bottom: 0;
+    }
+    .card-body {
+        padding-top: 0;
+    }
+}
+
 .p16 {
     padding: 16px;
 }

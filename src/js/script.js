@@ -26,7 +26,7 @@ let playerPoints = 0;
 let questions = {
     "1": {
         "question": "Wieviele Softwareentwickler braucht man um eine Glühbirne zu wechseln?",
-        "answer1": "5. Einer hält die Glühbirne, 4 drehen die Leiter.",
+        "answer1": "5, einer hält die Glühbirne, 4 drehen die Leiter.",
         "answer2": "Keinen, es ist ein Hardwareproblem.",
         "answer3": "3",
         "answer4": "Keine Ahnung",
@@ -81,10 +81,18 @@ let questions = {
     }
 };
 
+/**
+ * initial Function, which is started at body onload
+ */
 function init() {
     setQuestion(actualQuestion);
 }
 
+/**
+ * Displays the Question and the Answers from the requested id in JSON questions
+ * Scales the actual Question Number under the Star
+ * @param {integer} id - Position of the question in JSON questions
+ */
 function setQuestion(id) {
     document.getElementById('questionText').innerText = questions[id].question;
     document.getElementById('answerOne').innerText = questions[id].answer1;
@@ -95,6 +103,10 @@ function setQuestion(id) {
     actualQuestion = id;
 }
 
+/**
+ * Scales the actual question Number to 200%
+ * @param {integer} id - id of the requested Number under the star
+ */
 function scaleQuestionNumber(id) {
     for (let i = 1; i <= 5; i++) {
         document.getElementById('qNumber' + i).style.transform = "scale(1,1)";
@@ -102,6 +114,14 @@ function scaleQuestionNumber(id) {
     document.getElementById('qNumber' + id).style.transform = "scale(2,2)";
 }
 
+/**
+ * checks if the Answer is correct or wrong
+ * if correct: call function correctAnswer
+ * if wrong: call function falseAnswer
+ * remove Hover classes from Answer Buttons
+ * call function delay
+ * @param {integer} answerNumber - position of the clicked answer 
+ */
 function checkAnswer(answerNumber) {
     if (!answered) {
         if (questions[actualQuestion].correct == 'answer' + answerNumber) {
@@ -115,6 +135,15 @@ function checkAnswer(answerNumber) {
     delay();
 }
 
+/**
+ * Is called, when the Answer is correct
+ * Player gets 1 Point, if Hint is not used
+ * and 0.5 point if hint is used
+ * If hint is used call function setStar to set the Color of the Star to yellow
+ * If hint is not used, call function setStar to set the Color of the Star to green
+ * Call function setAnswerBackgroundColor to set the Background of the clicked answer to green
+ * @param {integer} answerNumber - position of the clicked answer 
+ */
 function correctAnswer(answerNumber) {
     if (usedHint == false) {
         setStar(actualQuestion, 'green');
@@ -126,14 +155,22 @@ function correctAnswer(answerNumber) {
     setAnswerBackgroundColor(answerNumber, 'green');
 }
 
+/**
+ * Is called, when answer is wrong
+ * call function setStar to set the Color of the Star to red
+ * Call function setAnswerBackgroundColor to set the Background of the clicked answer to red
+ * Call function setAnswerBackgroundColor to set the Background of the correct answer to green
+ * @param {integer} answerNumber - position of the clicked answer 
+ */
 function falseAnswer(answerNumber) {
     setStar(actualQuestion, 'red');
     setAnswerBackgroundColor(answerNumber, 'red');
     setAnswerBackgroundColor(questions[actualQuestion].correct.slice(6, 7), 'green');
 }
 
-
-
+/**
+ * Removes the Hover classes from the Answer containers
+ */
 function removeHoverClass() {
     document.getElementById('answerBlock1').classList.remove('cardBlock');
     document.getElementById('answerBlock2').classList.remove('cardBlock');
@@ -141,6 +178,11 @@ function removeHoverClass() {
     document.getElementById('answerBlock4').classList.remove('cardBlock');
 }
 
+/**
+ * checks if the Answer Container contains the hover class 'cardBlock'
+ * if not, adding the Hover classes from the Answer containers
+ * 
+ */
 function addHoverClass() {
     if (!document.getElementById('answerBlock1').classList.contains('cardBlock')) {
         document.getElementById('answerBlock1').classList.add('cardBlock');
@@ -150,6 +192,9 @@ function addHoverClass() {
     }
 }
 
+/**
+ * Removes all background color from the Answer Containers
+ */
 function removeBackgroundColors() {
     document.getElementById('answerBlock1').classList.remove('falseBG');
     document.getElementById('answerBlock2').classList.remove('falseBG');
@@ -161,9 +206,13 @@ function removeBackgroundColors() {
     document.getElementById('answerBlock4').classList.remove('correctBG');
 }
 
+/**
+ * Sets the backgroundColor of the requested AnswerBlock
+ * @param {integer} id - id of the AnswerBlock to change color
+ * @param {String} color - Color which the Answerblock should get
+ */
 function setAnswerBackgroundColor(id, color) {
     let answerBlock = document.getElementById('answerBlock' + id);
-    console.log('test: ' + id + ' ' + color);
     switch (color) {
         case 'red':
             answerBlock.classList.add('falseBG');
@@ -174,8 +223,10 @@ function setAnswerBackgroundColor(id, color) {
     }
 }
 
-
-
+/**
+ * Shows the player two wrong Answers, which will get red Backgrounds
+ * The Hint will be read from the JSON questions.
+ */
 function setHint() {
     if (!usedHint && !answered) {
         for (let i = 1; i <= 2; i++) {
@@ -186,6 +237,9 @@ function setHint() {
     }
 }
 
+/**
+ * function to restart the quiz
+ */
 function restart() {
     restarted = true;
     actualQuestion = 1;
@@ -201,10 +255,21 @@ function restart() {
     delay();
 }
 
+/**
+ * Changes the source from the requested Star, to get another color
+ * possible colors: red, green, blue, yellow
+ * @param {integer} id - Position of the requested Star
+ * @param {String} color - requested Color for the Star
+ */
 function setStar(id, color) {
     document.getElementById('star' + id).src = "src/img/star_" + color + ".png";
 }
 
+/**
+ * Function to wait 1.5 seconds
+ * call functions to display the next question
+ * if there are no left questions call instead function to show result
+ */
 async function delay() {
     answered = true;
     if (!restarted) {
@@ -221,13 +286,19 @@ async function delay() {
     answered = false;
 }
 
+/**
+ * add a class to blur the quiz
+ * Display the Playerpoints and show the result screen
+ */
 function showResult() {
     document.getElementById('points').innerText = playerPoints + ' von 5 Punkten';
     document.getElementById('result').classList.remove('d-none');
     document.getElementById('quiz').classList.add('blurred');
-
 }
 
+/**
+ * Remove the blur class from quiz and hide the result class
+ */
 function hideResult() {
     document.getElementById('result').classList.add('d-none');
     document.getElementById('quiz').classList.remove('blurred');
