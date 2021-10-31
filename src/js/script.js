@@ -23,6 +23,7 @@ let actualQuestion = 1;
 let usedHint = false;
 let restarted = false;
 let answered = false;
+let playerPoints = 0;
 let questions = {
     "1": {
         "question": "Wieviele Softwareentwickler braucht man um eine Glühbirne zu wechseln?",
@@ -31,7 +32,9 @@ let questions = {
         "answer3": "3",
         "answer4": "Keine Ahnung",
         "hint": "ToDo: Hinweis",
-        "correct": "answer2"
+        "correct": "answer2",
+        "hint1": "1",
+        "hint2": "4"
     },
     "2": {
         "question": "Was bedeutet html ausgeschrieben?",
@@ -40,7 +43,9 @@ let questions = {
         "answer3": "Highend total moderat Linguistik",
         "answer4": "Hypertext Markup Language",
         "hint": "ToDo: Hinweis",
-        "correct": "answer4"
+        "correct": "answer4",
+        "hint1": "1",
+        "hint2": "2"
     },
     "3": {
         "question": "Mit welchem Befehl erstellt man eine waagerechte Linie in Html?",
@@ -49,7 +54,9 @@ let questions = {
         "answer3": "<LI>",
         "answer4": "<TABLE>",
         "hint": "ToDo: Hinweis",
-        "correct": "answer1"
+        "correct": "answer1",
+        "hint1": "3",
+        "hint2": "4"
     },
     "4": {
         "question": "Wann begann die Einführung des Browsers?",
@@ -58,7 +65,9 @@ let questions = {
         "answer3": "1993",
         "answer4": "1983",
         "hint": "ToDo: Hinweis",
-        "correct": "answer3"
+        "correct": "answer3",
+        "hint1": "2",
+        "hint2": "4"
     },
     "5": {
         "question": "question",
@@ -67,7 +76,9 @@ let questions = {
         "answer3": "false",
         "answer4": "true",
         "hint": "ToDo: Hinweis",
-        "correct": "answer4"
+        "correct": "answer4",
+        "hint1": "2",
+        "hint2": "3"
     }
 
 
@@ -85,7 +96,6 @@ function setQuestion(id) {
     document.getElementById('answerFour').innerText = questions[id].answer4;
     scaleQuestionNumber(id);
     actualQuestion = id;
-
 }
 
 function scaleQuestionNumber(id) {
@@ -101,8 +111,10 @@ function checkAnswer(answerNumber) {
             console.log('correct');
             if (usedHint == false) {
                 setStar(actualQuestion, 'green');
+                playerPoints += 1;
             } else {
                 setStar(actualQuestion, 'yellow');
+                playerPoints += 0.5;
             }
             setAnswerBackgroundColor(answerNumber, 'green');
 
@@ -116,6 +128,7 @@ function checkAnswer(answerNumber) {
 
 
     }
+    usedHint = false;
     removeHoverClass();
     delay();
 }
@@ -161,34 +174,33 @@ function setAnswerBackgroundColor(id, color) {
     }
 }
 
-function hideHint() {
-    usedHint = false;
-    let hint = document.getElementById('hint');
-    if (!hint.classList.contains('d-none')) {
-        hint.classList.add('d-none');
-    };
 
-}
 
 function setHint() {
-    usedHint = true;
-    let hint = document.getElementById('hint');
-    hint.innerText = questions[actualQuestion].hint;
-    hint.classList.remove('d-none');
+    if (!usedHint) {
+        for (let i = 1; i <= 2; i++) {
+            let id = questions[actualQuestion]['hint' + i]
+            document.getElementById('answerBlock' + id).classList.add('falseBG');
+        }
+        usedHint = true;
+    }
 }
 
 function restart() {
+
     restarted = true;
     actualQuestion = 1;
     setQuestion(actualQuestion);
-    hideHint();
+    playerPoints = 0;
     addHoverClass();
     for (let i = 1; i <= 5; i++) {
         setStar(i, 'blue');
     }
     answered = false;
     removeBackgroundColors();
+    hideResult();
     delay();
+
 
 }
 
@@ -202,11 +214,26 @@ async function delay() {
 
     if (!restarted) {
         await new Promise(resolve => setTimeout(resolve, 1500));
-        setQuestion(actualQuestion + 1);
-        hideHint();
-        addHoverClass();
-        removeBackgroundColors();
+        if (actualQuestion <= 4) {
+            setQuestion(actualQuestion + 1);
+            addHoverClass();
+            removeBackgroundColors();
+        } else {
+            showResult();
+        }
     }
     restarted = false;
     answered = false;
+}
+
+function showResult() {
+    document.getElementById('points').innerText = playerPoints + ' von 5 Punkten';
+    document.getElementById('result').classList.remove('d-none');
+    document.getElementById('quiz').classList.add('blurred');
+
+}
+
+function hideResult() {
+    document.getElementById('result').classList.add('d-none');
+    document.getElementById('quiz').classList.remove('blurred');
 }
