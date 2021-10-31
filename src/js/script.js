@@ -123,16 +123,18 @@ function scaleQuestionNumber(id) {
  * @param {integer} answerNumber - position of the clicked answer 
  */
 function checkAnswer(answerNumber) {
+    console.log(answered);
     if (!answered) {
         if (questions[actualQuestion].correct == 'answer' + answerNumber) {
             correctAnswer(answerNumber);
         } else {
             falseAnswer(answerNumber);
         }
+        usedHint = false;
+        removeHoverClass();
+        delay();
     }
-    usedHint = false;
-    removeHoverClass();
-    delay();
+
 }
 
 /**
@@ -237,6 +239,20 @@ function setHint() {
     }
 }
 
+function disableAnswerButtons() {
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById('answerBlock' + i).removeAttribute('onclick');
+        console.log(i);
+    }
+}
+
+function activateAnswerButtons() {
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById('answerBlock' + i).setAttribute('onclick', 'checkAnswer(' + i + ');')
+        console.log('activate ' + i);
+    }
+}
+
 /**
  * function to restart the quiz
  */
@@ -252,17 +268,30 @@ function restart() {
     answered = false;
     removeBackgroundColors();
     hideResult();
-    delay();
+    removeFlipClass();
+
+
 }
 
 /**
  * Changes the source from the requested Star, to get another color
  * possible colors: red, green, blue, yellow
+ * Adding the flip class to the requested Star, so it will flip around
  * @param {integer} id - Position of the requested Star
  * @param {String} color - requested Color for the Star
  */
 function setStar(id, color) {
     document.getElementById('star' + id).src = "src/img/star_" + color + ".png";
+    document.getElementById('star' + id).classList.add('flip');
+}
+
+/**
+ * removes flip class from all stars
+ */
+function removeFlipClass() {
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById('star' + i).classList.remove('flip');
+    }
 }
 
 /**
@@ -272,18 +301,24 @@ function setStar(id, color) {
  */
 async function delay() {
     answered = true;
+    disableAnswerButtons();
+    await new Promise(resolve => setTimeout(resolve, 1500));
     if (!restarted) {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        if (actualQuestion <= 4) {
-            setQuestion(actualQuestion + 1);
-            addHoverClass();
-            removeBackgroundColors();
-        } else {
-            showResult();
-        }
+        loadNewQuestion();
     }
+    activateAnswerButtons();
     restarted = false;
     answered = false;
+}
+
+function loadNewQuestion() {
+    if (actualQuestion <= 4) {
+        setQuestion(actualQuestion + 1);
+        addHoverClass();
+        removeBackgroundColors();
+    } else {
+        showResult();
+    }
 }
 
 /**
