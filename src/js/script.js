@@ -18,7 +18,6 @@ function loadArrayFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
-
 let actualQuestion = 1;
 let usedHint = false;
 let restarted = false;
@@ -80,8 +79,6 @@ let questions = {
         "hint1": "2",
         "hint2": "3"
     }
-
-
 };
 
 function init() {
@@ -108,30 +105,33 @@ function scaleQuestionNumber(id) {
 function checkAnswer(answerNumber) {
     if (!answered) {
         if (questions[actualQuestion].correct == 'answer' + answerNumber) {
-            console.log('correct');
-            if (usedHint == false) {
-                setStar(actualQuestion, 'green');
-                playerPoints += 1;
-            } else {
-                setStar(actualQuestion, 'yellow');
-                playerPoints += 0.5;
-            }
-            setAnswerBackgroundColor(answerNumber, 'green');
-
+            correctAnswer(answerNumber);
         } else {
-            console.log('false');
-            setStar(actualQuestion, 'red');
-            setAnswerBackgroundColor(answerNumber, 'red');
-            setAnswerBackgroundColor(questions[actualQuestion].correct.slice(6, 7), 'green');
+            falseAnswer(answerNumber);
         }
-
-
-
     }
     usedHint = false;
     removeHoverClass();
     delay();
 }
+
+function correctAnswer(answerNumber) {
+    if (usedHint == false) {
+        setStar(actualQuestion, 'green');
+        playerPoints += 1;
+    } else {
+        setStar(actualQuestion, 'yellow');
+        playerPoints += 0.5;
+    }
+    setAnswerBackgroundColor(answerNumber, 'green');
+}
+
+function falseAnswer(answerNumber) {
+    setStar(actualQuestion, 'red');
+    setAnswerBackgroundColor(answerNumber, 'red');
+    setAnswerBackgroundColor(questions[actualQuestion].correct.slice(6, 7), 'green');
+}
+
 
 
 function removeHoverClass() {
@@ -177,7 +177,7 @@ function setAnswerBackgroundColor(id, color) {
 
 
 function setHint() {
-    if (!usedHint) {
+    if (!usedHint && !answered) {
         for (let i = 1; i <= 2; i++) {
             let id = questions[actualQuestion]['hint' + i]
             document.getElementById('answerBlock' + id).classList.add('falseBG');
@@ -187,7 +187,6 @@ function setHint() {
 }
 
 function restart() {
-
     restarted = true;
     actualQuestion = 1;
     setQuestion(actualQuestion);
@@ -200,18 +199,14 @@ function restart() {
     removeBackgroundColors();
     hideResult();
     delay();
-
-
 }
 
 function setStar(id, color) {
-    let star = document.getElementById('star' + id);
-    star.src = "src/img/star_" + color + ".png";
+    document.getElementById('star' + id).src = "src/img/star_" + color + ".png";
 }
 
 async function delay() {
     answered = true;
-
     if (!restarted) {
         await new Promise(resolve => setTimeout(resolve, 1500));
         if (actualQuestion <= 4) {
