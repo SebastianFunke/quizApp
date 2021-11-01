@@ -30,7 +30,6 @@ let questions = {
         "answer2": "Keinen, es ist ein Hardwareproblem.",
         "answer3": "3",
         "answer4": "Keine Ahnung",
-        "hint": "ToDo: Hinweis",
         "correct": "answer2",
         "hint1": "1",
         "hint2": "4"
@@ -41,7 +40,6 @@ let questions = {
         "answer2": "Heavy Table Mouse Lever",
         "answer3": "Highend total moderat Linguistik",
         "answer4": "Hypertext Markup Language",
-        "hint": "ToDo: Hinweis",
         "correct": "answer4",
         "hint1": "1",
         "hint2": "2"
@@ -52,7 +50,6 @@ let questions = {
         "answer2": "<UL>",
         "answer3": "<LI>",
         "answer4": "<TABLE>",
-        "hint": "ToDo: Hinweis",
         "correct": "answer1",
         "hint1": "3",
         "hint2": "4"
@@ -63,18 +60,16 @@ let questions = {
         "answer2": "1988",
         "answer3": "1993",
         "answer4": "1983",
-        "hint": "ToDo: Hinweis",
         "correct": "answer3",
         "hint1": "2",
         "hint2": "4"
     },
     "5": {
-        "question": "question",
-        "answer1": "false",
-        "answer2": "false",
-        "answer3": "false",
-        "answer4": "true",
-        "hint": "ToDo: Hinweis",
+        "question": "Wie definiert man eine Variable von Typ String in Javascript?",
+        "answer1": "text 'hello' => variable",
+        "answer2": "let variable == 'hello'",
+        "answer3": "String variable = 'hello",
+        "answer4": "let variable = 'hello'",
         "correct": "answer4",
         "hint1": "2",
         "hint2": "3"
@@ -239,18 +234,27 @@ function setHint() {
     }
 }
 
+/**
+ * removes the onclick Attribute from all answerBlocks to be sure, that no function is called while the delay time
+ */
 function disableAnswerButtons() {
     for (let i = 1; i <= 4; i++) {
         document.getElementById('answerBlock' + i).removeAttribute('onclick');
-        console.log(i);
     }
+    document.getElementById('restart').removeAttribute('onclick');
+    document.getElementById('hint').removeAttribute('onclick');
 }
 
+/**
+ * Adding the onclick attribute to all answerBlocks
+ */
 function activateAnswerButtons() {
     for (let i = 1; i <= 4; i++) {
         document.getElementById('answerBlock' + i).setAttribute('onclick', 'checkAnswer(' + i + ');')
-        console.log('activate ' + i);
     }
+    document.getElementById('restart').setAttribute('onclick', 'restart()');
+    document.getElementById('hint').setAttribute('onclick', 'setHint()');
+
 }
 
 /**
@@ -269,7 +273,6 @@ function restart() {
     removeBackgroundColors();
     hideResult();
     removeFlipClass();
-
 
 }
 
@@ -296,21 +299,24 @@ function removeFlipClass() {
 
 /**
  * Function to wait 1.5 seconds
- * call functions to display the next question
- * if there are no left questions call instead function to show result
+ * call function to load next question
  */
 async function delay() {
     answered = true;
     disableAnswerButtons();
+    //if (!restarted) {
     await new Promise(resolve => setTimeout(resolve, 1500));
-    if (!restarted) {
-        loadNewQuestion();
-    }
+    loadNewQuestion();
+    //}
     activateAnswerButtons();
     restarted = false;
     answered = false;
 }
 
+/**
+ * call functions to display next question
+ * if ther are no further questions show result
+ */
 function loadNewQuestion() {
     if (actualQuestion <= 4) {
         setQuestion(actualQuestion + 1);
