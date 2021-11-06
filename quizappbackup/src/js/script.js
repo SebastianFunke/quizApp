@@ -99,14 +99,16 @@ function setQuestion(id) {
 }
 
 /**
- * Scales the actual question Number to 200%
- * @param {integer} id - id of the requested Number under the star
+ * Scales the actual question Star to 140%
+ * sets the progress Bar to actual Questionnumber
+ * @param {integer} id - id of the requested star
  */
 function scaleQuestionNumber(id) {
     for (let i = 1; i <= 5; i++) {
-        document.getElementById('qNumber' + i).style.transform = "scale(1,1)";
+        document.getElementById('star' + i).style.transform = "scale(1,1)";
     }
-    document.getElementById('qNumber' + id).style.transform = "scale(2,2)";
+    document.getElementById('star' + id).style.transform = "scale(1.4,1.4)";
+    document.getElementById('progressBar').style.width = (id * 20) - 10 + '%';
 }
 
 /**
@@ -118,7 +120,6 @@ function scaleQuestionNumber(id) {
  * @param {integer} answerNumber - position of the clicked answer 
  */
 function checkAnswer(answerNumber) {
-    console.log(answered);
     if (!answered) {
         if (questions[actualQuestion].correct == 'answer' + answerNumber) {
             correctAnswer(answerNumber);
@@ -172,6 +173,8 @@ function removeHoverClass() {
     for (let i = 1; i <= 4; i++) {
         document.getElementById('answerBlock' + i).classList.remove('cardBlock');
     }
+    document.getElementById('restart').classList.remove('cardBlock');
+    document.getElementById('hint').classList.remove('cardBlock');
 }
 
 /**
@@ -184,6 +187,8 @@ function addHoverClass() {
         for (let i = 1; i <= 4; i++) {
             document.getElementById('answerBlock' + i).classList.add('cardBlock');
         }
+        document.getElementById('restart').classList.add('cardBlock');
+        document.getElementById('hint').classList.add('cardBlock');
     }
 }
 
@@ -191,14 +196,10 @@ function addHoverClass() {
  * Removes all background color from the Answer Containers
  */
 function removeBackgroundColors() {
-    document.getElementById('answerBlock1').classList.remove('falseBG');
-    document.getElementById('answerBlock2').classList.remove('falseBG');
-    document.getElementById('answerBlock3').classList.remove('falseBG');
-    document.getElementById('answerBlock4').classList.remove('falseBG');
-    document.getElementById('answerBlock1').classList.remove('correctBG');
-    document.getElementById('answerBlock2').classList.remove('correctBG');
-    document.getElementById('answerBlock3').classList.remove('correctBG');
-    document.getElementById('answerBlock4').classList.remove('correctBG');
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById('answerBlock' + i).classList.remove('falseBG');
+        document.getElementById('answerBlock' + i).classList.remove('correctBG');
+    }
 }
 
 /**
@@ -227,6 +228,8 @@ function setHint() {
         for (let i = 1; i <= 2; i++) {
             let id = questions[actualQuestion]['hint' + i]
             document.getElementById('answerBlock' + id).classList.add('falseBG');
+            document.getElementById('answerBlock' + id).classList.remove('cardBlock');
+            document.getElementById('answerBlock' + id).removeAttribute('onclick');
         }
         usedHint = true;
     }
@@ -271,7 +274,6 @@ function restart() {
     removeBackgroundColors();
     hideResult();
     removeFlipClass();
-
 }
 
 /**
@@ -358,6 +360,6 @@ function setResultImg() {
         document.getElementById('resultPic').src = 'src/img/cup.png';
         var audio = new Audio('src/sounds/cheer.wav');
     }
-    audio.volume = 0.3;
+    audio.volume = 0.2;
     audio.play();
 }

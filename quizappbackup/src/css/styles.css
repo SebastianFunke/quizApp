@@ -28,6 +28,10 @@ body {
     height: auto;
 }
 
+.progress {
+    margin-top: 1.5rem;
+}
+
 .stars {
     display: flex;
     justify-content: space-around;
