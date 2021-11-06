@@ -1,0 +1,190 @@
+@font-face {
+    font-family: "raleway";
+    src: url(../fonts/raleway/static/Raleway-Regular.ttf) format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "raleway_bold";
+    src: url(../fonts/raleway/static/Raleway-Bold.ttf) format("truetype");
+    font-style: normal;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "raleway_italic";
+    src: url(../fonts/raleway/static/Raleway-Italic.ttf) format("truetype");
+    font-style: italic;
+    font-weight: normal;
+}
+
+body {
+    font-family: 'raleway';
+}
+
+#resultPic {
+    max-width: 25vw;
+    height: auto;
+}
+
+.stars {
+    display: flex;
+    justify-content: space-around;
+}
+
+.centerAll {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    background-image: url("../img/quizbackground.png");
+    background-color: #cccccc;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.imgHead {
+    height: 12rem;
+    object-fit: contain;
+}
+
+.pl_0 {
+    padding-left: 0 !important;
+}
+
+.pr_0 {
+    padding-right: 0 !important;
+}
+
+.pl_1 {
+    padding-left: 0.7em;
+}
+
+.card {
+    background-color: transparent !important;
+}
+
+.rightSide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.questionFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stars img {
+    min-width: 10%;
+    min-height: auto;
+}
+
+.stars span {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.questionRestart {
+    background-color: blueviolet;
+    padding: 1rem 3rem;
+}
+
+.answerCard {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.card-title {
+    padding: 1rem 1rem;
+}
+
+.cardBlock:hover {
+    background-color: aqua !important;
+    cursor: pointer;
+}
+
+.correctBG {
+    background-color: greenyellow !important;
+}
+
+.falseBG {
+    background-color: red !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.p8 {
+    padding: 8px;
+}
+
+@media (max-width: 576px) {
+    #restart {
+        padding-bottom: 1rem !important;
+    }
+    #hint {
+        padding-bottom: 1rem !important;
+    }
+    .card-body {
+        text-align: center !important;
+    }
+    .rightSide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+    }
+    .card-title {
+        padding-bottom: 0;
+    }
+    .card-body {
+        padding-top: 0;
+    }
+}
+
+.p16 {
+    padding: 16px;
+}
+
+.flip {
+    transition: all 425ms ease-in-out;
+    transform: rotate3d(1, 2, 3, 360deg);
+}
+
+.sp-between {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.result {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    flex-direction: column;
+    font-size: xx-large;
+}
+
+.blurred {
+    filter: blur(5px);
+}
